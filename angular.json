@@ -103,6 +103,37 @@
           }
         }
       }
+    },
+    "gigya": {
+      "projectType": "library",
+      "root": "projects/gigya",
+      "sourceRoot": "projects/gigya/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/gigya/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/gigya/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/gigya/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/gigya/src/test.ts",
+            "tsConfig": "projects/gigya/tsconfig.spec.json",
+            "karmaConfig": "projects/gigya/karma.conf.js"
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngx-gigya"
