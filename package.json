@@ -6,8 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "build-lib-prod": "ng build --project gigya --configuration production",
-    "build-lib-prod-watch": "ng build --project gigya --configuration production --watch",
+    "build-lib-prod": "ng build --project ngx-gigya",
+    "build-lib-prod-watch": "ng build --project ngx-gigya --watch",
     "test": "ng test"
   },
   "private": true,

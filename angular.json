@@ -6,7 +6,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-gigya": {
+    "ngx-gigya-host-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ngx-gigya",
+            "outputPath": "dist/ngx-gigya-host-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -104,7 +104,7 @@
         }
       }
     },
-    "gigya": {
+    "ngx-gigya": {
       "projectType": "library",
       "root": "projects/gigya",
       "sourceRoot": "projects/gigya/src",
@@ -136,5 +136,5 @@
       }
     }
   },
-  "defaultProject": "ngx-gigya"
+  "defaultProject": "ngx-gigya-host-app"
 }
