@@ -1,8 +1,19 @@
 // noinspection TypeScriptPreferShortImport
 import { ZoneAwareProxyService } from '../zone-aware/zone-aware-proxy.service';
 import { Inject, Injectable } from '@angular/core';
-import { Gigya, GigyaAccounts, GigyaDS, GigyaResponse, GSErrors, LoginEvent } from '../../models/gigya';
-import { AddEventHandlersParams, GetAccountInfoRequest, GetAccountInfoResponse, GetJWTResponse, ShowScreenSetRequest } from '../../models/gigya/accounts';
+import {
+  AddEventHandlersParams,
+  GetAccountInfoRequest,
+  GetAccountInfoResponse,
+  GetJWTResponse,
+  Gigya,
+  GigyaAccounts,
+  GigyaDS,
+  GigyaResponse,
+  GSErrors,
+  LoginEvent,
+  ShowScreenSetRequest
+} from '../../models';
 import { GIGYA } from '../../injection-tokens';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { promiseTimeout } from '../../utils';
@@ -13,7 +24,7 @@ import { promiseTimeout } from '../../utils';
 export class GigyaService {
 
   get isLoggedIn$(): Observable<boolean> { return this._isLoggedIn$; }
-  get account$(): Observable<GetAccountInfoResponse| LoginEvent> { return this._account$; }
+  get account$(): Observable<GetAccountInfoResponse| LoginEvent | undefined> { return this._account$; }
 
   constructor(@Inject(GIGYA) private gigya: Gigya,
               private zoneAwareProxySrv: ZoneAwareProxyService) {
@@ -25,10 +36,10 @@ export class GigyaService {
 
   private _isLoggedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  private _account$: BehaviorSubject<GetAccountInfoResponse | LoginEvent> = new BehaviorSubject<GetAccountInfoResponse | LoginEvent>(undefined);
+  private _account$: BehaviorSubject<GetAccountInfoResponse | LoginEvent | undefined> = new BehaviorSubject<GetAccountInfoResponse | LoginEvent | undefined>(undefined);
 
-  ds: GigyaDS;
-  accounts: GigyaAccounts;
+  ds: GigyaDS | undefined;
+  accounts: GigyaAccounts | undefined;
 
   private init(): void {
     this.accounts = this.wrapNamespaceWithZoneAwareProxy<GigyaAccounts>('accounts');
@@ -73,7 +84,7 @@ export class GigyaService {
   private wrapNamespaceWithZoneAwareProxy<T>(namespace: string): T {
     return new Proxy(this.gigya[namespace], {
       get: (target, prop: string) => {
-        return (param) => {
+        return (param: any) => {
           return this.zoneAwareProxySrv.run(target[prop], `gigya.${namespace}.${prop}`, param);
         };
       }
@@ -82,22 +93,22 @@ export class GigyaService {
 
   public isSessionValid(): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      this.gigya._.apiAdapter.isSessionValid(undefined, resolve);
+      this.gigya['_'].apiAdapter.isSessionValid(undefined, resolve);
     });
   }
 
   public addEventHandlers(params: AddEventHandlersParams): void {
-    this.accounts.addEventHandlers(params);
+    this.accounts?.addEventHandlers(params);
   }
 
   public showScreenSet(params: ShowScreenSetRequest): void {
-    this.accounts.showScreenSet(params);
+    this.accounts?.showScreenSet(params);
   }
 
   public getAccountInfo(params?: GetAccountInfoRequest): Promise<GetAccountInfoResponse> {
     return new Promise<GetAccountInfoResponse>(resolve => {
-      this.accounts.getAccountInfo(Object.assign(params || {}, {
-        callback: accountInfo => {
+      this.accounts?.getAccountInfo(Object.assign(params || {}, {
+        callback: (accountInfo: GetAccountInfoResponse) => {
           this._account$.next(accountInfo);
           resolve(accountInfo);
         }}));
@@ -106,13 +117,13 @@ export class GigyaService {
 
   public logout(): Promise<GigyaResponse> {
     return new Promise<GigyaResponse>(resolve => {
-      this.accounts.logout({callback: resolve});
+      this.accounts?.logout({callback: resolve});
     });
   }
 
   public getJWT(): Promise<GetJWTResponse> {
     const getJWTPromise = new Promise<GetJWTResponse>((resolve) => {
-      return this.accounts.getJWT({ callback: resolve, fields: 'data.userKey' });
+      return this.accounts?.getJWT({ callback: resolve, fields: 'data.userKey' });
     });
     return promiseTimeout<GetJWTResponse>(getJWTPromise);
   }

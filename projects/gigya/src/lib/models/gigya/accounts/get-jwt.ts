@@ -15,4 +15,4 @@ export type GetJWTRequest =
   apiKey?: string;
   fields?: string;
   expiration?: number;
-} & Required<{ callback }>;
+} & Required<{ callback: (res: GetJWTResponse) => void }>;
