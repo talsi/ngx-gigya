@@ -71,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ngx-gigya:build:production"
+              "browserTarget": "ngx-gigya-host-app:build:production"
             },
             "development": {
-              "browserTarget": "ngx-gigya:build:development"
+              "browserTarget": "ngx-gigya-host-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngx-gigya:build"
+            "browserTarget": "ngx-gigya-host-app:build"
           }
         },
         "test": {

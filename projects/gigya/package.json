@@ -1,6 +1,6 @@
 {
   "name": "ngx-gigya",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "keywords": ["ngx-gigya", "gigya", "angular", "typescript", "sdk", "web-sdk", "gigya-web-sdk"],
   "repository": "https://github.com/talsi/ngx-gigya",
   "peerDependencies": {

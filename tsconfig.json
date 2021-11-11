@@ -8,9 +8,11 @@
     "strict": true,
     "noImplicitOverride": true,
     "paths": {
-      "gigya": [
-        "dist/gigya/gigya",
-        "dist/gigya"
+      "ngx-gigya": [
+        "projects/gigya/src/public-api"
+      ],
+      "ngx-gigya/*": [
+        "projects/gigya/src/lib/*"
       ]
     },
     "noPropertyAccessFromIndexSignature": true,

@@ -99,7 +99,7 @@ export class GigyaService {
   }
 
   public addEventHandlers(params: AddEventHandlersParams): void {
-    this.addEventHandlers(params);
+    this.accounts.addEventHandlers(params);
   }
 
   public showScreenSet(params: ShowScreenSetRequest): void {
