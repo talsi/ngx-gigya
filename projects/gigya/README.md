@@ -1,24 +1,66 @@
-# Gigya
+# Example Usage
+
+---
+``AppModule.ts``
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent } from './app.component';
+import { GigyaModule } from 'ngx-gigya';
+import { CommonModule } from '@angular/common';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    CommonModule,
+    GigyaModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+---
+``app.component.ts``
+```typescript
+import { Component } from '@angular/core';
+import { GetAccountInfoResponse, GigyaService, LoginEvent } from 'ngx-gigya';
+import { Observable } from 'rxjs';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+
+  account$:  Observable<GetAccountInfoResponse | LoginEvent | undefined> = this.gigya.account$;
+
+  constructor(private gigya: GigyaService) {
+    gigya.accounts.getAccountInfo({
+      callback: (accountInfo: GetAccountInfoResponse) => {
+        if (!accountInfo?.profile) {
+          gigya.accounts?.showScreenSet({
+            screenSet: 'Default-RegistrationLogin',
+            startScreen: 'gigya-login-screen'
+          });
+        }
+      }
+    })
+  }
+}
+
+```
+---
+``app.component.html``
+```angular2html
+<div *ngIf="(account$ | async) as account">Hello, {{account.profile.firstName | titlecase}}!</div>
+```
+---
+# NGX-Gigya
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.0.
-
-## Code scaffolding
-
-Run `ng generate component component-name --project gigya` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project gigya`.
-> Note: Don't forget to add `--project gigya` or else it will be added to the default project in your `angular.json` file. 
-
-## Build
-
-Run `ng build gigya` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Publishing
-
-After building your library with `ng build gigya`, go to the dist folder `cd dist/gigya` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test gigya` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
