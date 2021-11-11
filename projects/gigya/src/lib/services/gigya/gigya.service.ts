@@ -24,7 +24,10 @@ import { promiseTimeout } from '../../utils';
 export class GigyaService {
 
   get isLoggedIn$(): Observable<boolean> { return this._isLoggedIn$; }
-  get account$(): Observable<GetAccountInfoResponse| LoginEvent | undefined> { return this._account$; }
+  get account$(): Observable<GetAccountInfoResponse| LoginEvent> {
+    // @ts-ignore
+    return this._account$;
+  }
 
   constructor(@Inject(GIGYA) private gigya: Gigya,
               private zoneAwareProxySrv: ZoneAwareProxyService) {
