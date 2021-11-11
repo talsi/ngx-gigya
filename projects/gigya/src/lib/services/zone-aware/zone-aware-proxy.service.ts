@@ -8,7 +8,7 @@ const noop = () => {};
 export class ZoneAwareProxyService {
 
   private static log(msg: string, params: any[] = []): void {
-    console.log.apply(console, [`%c[ZoneAwareProxyService]: ${msg}`, 'color: #b0b0b0b0;'].concat(params));
+    // console.log.apply(console, [`%c[ZoneAwareProxyService]: ${msg}`, 'color: #b0b0b0b0;'].concat(params));
   }
 
   constructor(private ngZone: NgZone) {
