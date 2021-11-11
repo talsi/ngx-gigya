@@ -42,7 +42,8 @@ export class GigyaService {
   private _account$: BehaviorSubject<GetAccountInfoResponse | LoginEvent | undefined> = new BehaviorSubject<GetAccountInfoResponse | LoginEvent | undefined>(undefined);
 
   ds: GigyaDS | undefined;
-  accounts: GigyaAccounts | undefined;
+  // @ts-ignore
+  accounts: GigyaAccounts;
 
   private init(): void {
     this.accounts = this.wrapNamespaceWithZoneAwareProxy<GigyaAccounts>('accounts');
@@ -101,16 +102,16 @@ export class GigyaService {
   }
 
   public addEventHandlers(params: AddEventHandlersParams): void {
-    this.accounts?.addEventHandlers(params);
+    this.addEventHandlers(params);
   }
 
   public showScreenSet(params: ShowScreenSetRequest): void {
-    this.accounts?.showScreenSet(params);
+    this.accounts.showScreenSet(params);
   }
 
   public getAccountInfo(params?: GetAccountInfoRequest): Promise<GetAccountInfoResponse> {
     return new Promise<GetAccountInfoResponse>(resolve => {
-      this.accounts?.getAccountInfo(Object.assign(params || {}, {
+      this.accounts.getAccountInfo(Object.assign(params || {}, {
         callback: (accountInfo: GetAccountInfoResponse) => {
           this._account$.next(accountInfo);
           resolve(accountInfo);
@@ -120,13 +121,13 @@ export class GigyaService {
 
   public logout(): Promise<GigyaResponse> {
     return new Promise<GigyaResponse>(resolve => {
-      this.accounts?.logout({callback: resolve});
+      this.accounts.logout({callback: resolve});
     });
   }
 
   public getJWT(): Promise<GetJWTResponse> {
     const getJWTPromise = new Promise<GetJWTResponse>((resolve) => {
-      return this.accounts?.getJWT({ callback: resolve, fields: 'data.userKey' });
+      return this.accounts.getJWT({ callback: resolve, fields: 'data.userKey' });
     });
     return promiseTimeout<GetJWTResponse>(getJWTPromise);
   }
